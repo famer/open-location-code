@@ -8,23 +8,24 @@ class OpenLocationCode {
     let CHARACTER_SET = "23456789CFGHJMPQRVWX"
     let SUFFIX_PADDING = "0"
     
-    func isValid(code: String) -> Bool {
+    func isValid(var code: String) -> Bool {
         
-        
+        code = code.uppercaseString
         
         // Checks if code contains not more then one separator
-        let splitBlocks = ["one", "two", "three"]//code.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: SEPARATOR))
+        let splitBlocks = code.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: SEPARATOR))
         
-        if ( splitBlocks.count > 2 ) {
+        if splitBlocks.count > 2 {
             return false;
-        } else {
-            if ( count(splitBlocks[0]) != 4 ) {
+        } else if splitBlocks.count == 2  {
+            // Checks if separator positioned after 4-th character
+            if splitBlocks[0].characters.count != 4 {
                 return false;
             }
         }
         
         // Checks if code contains only allowed characters
-        if ( code.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: CHARACTER_SET).invertedSet) != nil ) {
+        if code.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "\(CHARACTER_SET)+" ).invertedSet) != nil {
             return false;
         }
         return true;
@@ -55,7 +56,7 @@ class OpenLocationCode {
 }
 
 var olc = OpenLocationCode()
+var code = "2Q34+QQ"
 
-olc.isValid("2Q")
+olc.isValid(code)
 
-"22+34+QQ".componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: "+")).count
